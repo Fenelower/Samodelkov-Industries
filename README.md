@@ -13,15 +13,8 @@ SQL queries are used to count customers by state, city, ZIP code, unique custome
 A Python script is provided to run the SQL queries automatically and save the results to CSV files.
 
 Repository Structure
-Samodelkov-Analytics/
-│
-├── customers_setup.sql         # Table creation and CSV import
-├── queries.sql                 # 10 analytical SQL queries
-├── main.py                     # Python script for running analytics
-├── olist_customers_dataset2.csv  # CSV file with customer data
-├── images/
-│   └── analytics_screenshot.png  # Screenshot of analytics
-└── README.md                   # This file
+<img width="470" height="193" alt="image" src="https://github.com/user-attachments/assets/b49201f2-a79f-494f-93b5-30e279bd8d15" />
+
 
 Analytics Screenshot
 
