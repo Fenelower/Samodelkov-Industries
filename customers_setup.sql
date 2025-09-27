@@ -16,7 +16,6 @@ CREATE TABLE customers (
 );
 
 -- Импорт данных из CSV
--- Замените путь на путь к вашему CSV-файлу
 \copy customers(customer_id, customer_unique_id, customer_zip_code_prefix, customer_city, customer_state)
 FROM 'C:/Users/Пользователь/Desktop/Новая папка (5)/2313/olist_customers_dataset2.csv'
 DELIMITER ','
@@ -25,3 +24,4 @@ CSV HEADER;
 -- Проверка первых 10 строк
 SELECT * FROM customers
 LIMIT 10;
+
