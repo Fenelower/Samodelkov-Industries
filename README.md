@@ -36,7 +36,7 @@ Key functionalities include:
 
 ✅ This will create the customers table and import the CSV data.
 
-2. Run SQL Analytics Queries
+## 2. Run SQL Analytics Queries
 
 Open queries.sql in psql or pgAdmin.
 
@@ -44,7 +44,7 @@ Execute all 10 queries.
 
 Results can be viewed in the terminal or in pgAdmin.
 
-##3. Run Python Script
+## 3. Run Python Script
 
 ### Install required Python libraries:
 ```pip install psycopg2-binary pandas```
