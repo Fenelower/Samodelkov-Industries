@@ -1,36 +1,40 @@
-Samodelkov Industries Analytics
-About the Company
+# Samodelkov Industries Analytics
 
-Samodelkov Industries is a data analytics company.
-The project focuses on analyzing the customer database to understand customer distribution by regions, popular cities, and unique clients.
+## About the Company
+**Samodelkov Industries** is a data analytics company.  
+This project focuses on analyzing the customer database to understand **customer distribution by regions, popular cities, and unique clients**.
 
-About the Project
+---
 
-This project performs basic analytics on the customers of Samodelkov Industries.
+## About the Project
+This project performs **basic analytics** on the customers of Samodelkov Industries using **SQL queries** and a **Python automation script**.  
 
-SQL queries are used to count customers by state, city, ZIP code, unique customers, and check for duplicates.
+Key functionalities include:
+- Counting customers by **state, city, ZIP code**.
+- Identifying **unique customers**.
+- Checking for **duplicates** in the database.
+- Automating query execution and saving results to **CSV files** using Python.
 
-A Python script is provided to run the SQL queries automatically and save the results to CSV files.
+---
 
-Repository Structure
+## Repository Structure
 <img width="470" height="193" alt="image" src="https://github.com/user-attachments/assets/b49201f2-a79f-494f-93b5-30e279bd8d15" />
 
 
-Analytics Screenshot
 
-How to Run the Project
-1. Create Table and Import CSV
-
-Make sure PostgreSQL is installed and the database is created.
-
-Open psql or pgAdmin.
-
-Run the customers_setup.sql script:
-
-\i 'C:\Users\Пользователь\Desktop\DATAVISUALISATION/customers_setup.sql'
+---
 
 
-✅ The customers table will be created and the CSV data imported.
+## How to Run the Project
+
+### 1. Create Table and Import CSV
+1. Make sure **PostgreSQL** is installed and the database is created.
+2. Open **psql** or **pgAdmin**.
+3. Run the setup script:
+   ```sql
+   \i 'C:\Users\Пользователь\Desktop\DATAVISUALISATION/customers_setup.sql'
+
+✅ This will create the customers table and import the CSV data.
 
 2. Run SQL Analytics Queries
 
@@ -40,41 +44,34 @@ Execute all 10 queries.
 
 Results can be viewed in the terminal or in pgAdmin.
 
-3. Run Python Script
+##3. Run Python Script
 
-Install the required Python libraries:
+### Install required Python libraries:
+```pip install psycopg2-binary pandas```
 
-pip install psycopg2-binary pandas
-
-
-Open main.py and configure your database connection:
-
-DB_HOST = 'localhost'
+###Open main.py and configure your database connection:
+```
+DB_HOST = 'localhost
 DB_NAME = 'MAXIMVISUAL'
 DB_USER = 'postgres'
 DB_PASS = 'maxim22s2'
 DB_PORT = 5433
+```
 
-
-Run the script:
-
-python main.py
-
-
+###Run the script:
+```python main.py```
 The script will display results in the terminal and save CSV files in the project folder.
 
-Tools and Resources
+##Tools and Resources
+-PostgreSQL
+-psql / pgAdmin
+-Python 3.x
+-Python libraries: psycopg2-binary, pandas
+-Git & GitHub
+-Customer CSV file
+-VS Code / Notepad++ (for editing scripts)
 
-PostgreSQL
+##License
 
-psql / pgAdmin
+This project is licensed under the MIT License.
 
-Python 3.x
-
-Python libraries: psycopg2-binary, pandas
-
-Git & GitHub
-
-Customer CSV file
-
-VS Code / Notepad++ (for editing scripts)
