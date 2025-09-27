@@ -49,7 +49,7 @@ Results can be viewed in the terminal or in pgAdmin.
 ### Install required Python libraries:
 ```pip install psycopg2-binary pandas```
 
-###Open main.py and configure your database connection:
+### Open main.py and configure your database connection:
 ```
 DB_HOST = 'localhost
 DB_NAME = 'MAXIMVISUAL'
@@ -58,11 +58,11 @@ DB_PASS = 'maxim22s2'
 DB_PORT = 5433
 ```
 
-###Run the script:
+## Run the script:
 ```python main.py```
 The script will display results in the terminal and save CSV files in the project folder.
 
-##Tools and Resources
+### Tools and Resources
 -PostgreSQL
 -psql / pgAdmin
 -Python 3.x
@@ -71,7 +71,7 @@ The script will display results in the terminal and save CSV files in the projec
 -Customer CSV file
 -VS Code / Notepad++ (for editing scripts)
 
-##License
+### License
 
 This project is licensed under the MIT License.
 
