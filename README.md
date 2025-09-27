@@ -21,6 +21,13 @@ Key functionalities include:
 <img width="470" height="193" alt="image" src="https://github.com/user-attachments/assets/b49201f2-a79f-494f-93b5-30e279bd8d15" />
 
 
+---
+
+
+## ER-diagram
+<img width="1040" height="839" alt="image" src="https://github.com/user-attachments/assets/23915964-8897-4a9e-bca1-2729c23abd00" />
+
+
 
 ---
 
