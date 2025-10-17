@@ -1,0 +1,108 @@
+# auto_insert_events.py
+import time
+import random
+import psycopg2
+from psycopg2 import sql
+from faker import Faker
+from datetime import datetime
+
+DB_HOST = "localhost"
+DB_NAME = "MAXIMVISUAL"
+DB_USER = "postgres"
+DB_PASS = "maxim22s2"
+DB_PORT = 5433
+INTERVAL_SECONDS = 10  # вставлять
+
+fake = Faker()
+
+def get_primary_key_column(conn):
+    """
+    Находит первичный ключ таблицы customers (если есть).
+    Возвращает имя столбца (str) или None.
+    """
+    q = """
+    SELECT kcu.column_name
+    FROM information_schema.table_constraints tc
+    JOIN information_schema.key_column_usage kcu
+      ON tc.constraint_name = kcu.constraint_name
+     AND tc.table_schema = kcu.table_schema
+    WHERE tc.constraint_type = 'PRIMARY KEY'
+      AND tc.table_name = 'customers';
+    """
+    with conn.cursor() as cur:
+        cur.execute(q)
+        r = cur.fetchone()
+        return r[0] if r else None
+
+def ensure_fk(conn, pk_col):
+    """
+    Добавляет внешний ключ к customer_events.customer_id -> customers.<pk_col>
+    если он ещё не создан.
+    """
+    check_q = """
+    SELECT constraint_name
+    FROM information_schema.table_constraints
+    WHERE table_name = 'customer_events' AND constraint_type='FOREIGN KEY';
+    """
+    with conn.cursor() as cur:
+        cur.execute(check_q)
+        if cur.fetchone():
+            return  # уже есть FK
+        alter = sql.SQL("""
+            ALTER TABLE customer_events
+            ADD CONSTRAINT fk_customer
+            FOREIGN KEY (customer_id) REFERENCES customers({pk}) ON DELETE CASCADE;
+        """).format(pk=sql.Identifier(pk_col))
+        cur.execute(alter)
+        conn.commit()
+
+def pick_random_customer(conn, pk_col):
+    with conn.cursor() as cur:
+        cur.execute(sql.SQL("SELECT {pk} FROM customers ORDER BY random() LIMIT 1").format(pk=sql.Identifier(pk_col)))
+        r = cur.fetchone()
+        return r[0] if r else None
+
+def insert_event(conn, customer_id):
+    event_types = ["purchase", "visit", "complaint", "feedback", "subscription", "refund"]
+    event = random.choice(event_types)
+    amount = None
+    if event in ("purchase", "refund", "subscription"):
+        amount = round(random.uniform(5.0, 500.0), 2)
+    note = fake.sentence(nb_words=6)
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO customer_events (customer_id, event_type, amount, event_time, note)
+            VALUES (%s, %s, %s, now(), %s) RETURNING event_id;
+            """,
+            (customer_id, event, amount, note)
+        )
+        eid = cur.fetchone()[0]
+        conn.commit()
+        return eid
+
+def main():
+    conn = psycopg2.connect(host=DB_HOST, dbname=DB_NAME, user=DB_USER, password=DB_PASS, port=DB_PORT)
+    try:
+        pk_col = get_primary_key_column(conn)
+        if not pk_col:
+            print("Не найден первичный ключ в таблице customers. Убедитесь, что таблица customers существует.")
+            return
+        print(f"Найден PK в customers: {pk_col}. Убедимся, что FK присутствует в customer_events...")
+        ensure_fk(conn, pk_col)
+        print("Готово. Начинаю вставки. Ctrl+C чтобы остановить.")
+        while True:
+            customer_id = pick_random_customer(conn, pk_col)
+            if customer_id is None:
+                print("Нет записей в таблице customers. Завершение.")
+                break
+            eid = insert_event(conn, customer_id)
+            print(f"[{datetime.now()}] Inserted event_id={eid} for customer_id={customer_id}")
+            time.sleep(INTERVAL_SECONDS)
+    except KeyboardInterrupt:
+        print("Остановлено пользователем.")
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    main()
