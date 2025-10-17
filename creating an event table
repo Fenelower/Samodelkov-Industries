@@ -1,0 +1,12 @@
+-- create_customer_events.sql
+-- Создаёт таблицу customer_events, если её нет.
+-- Скрипт предполагает, что в БД есть таблица customers с первичным ключом.
+CREATE TABLE IF NOT EXISTS customer_events (
+    event_id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL, -- внешний ключ будет добавлен динамически, если PK существует
+    event_type VARCHAR(50) NOT NULL,
+    amount NUMERIC(10,2),
+    event_time TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+    note TEXT
+);
+-- Примечание: внешний ключ на customers будет добавлен скриптом Python (если имя PK совпадает).
