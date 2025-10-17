@@ -1,0 +1,57 @@
+-- heatmap: state vs city frequency
+SELECT
+  state,
+  city,
+  COUNT(*) AS cnt
+FROM customers
+GROUP BY state, city
+ORDER BY cnt DESC;
+
+
+-- Sunburst: state -> city -> top customers count
+SELECT
+  state,
+  city,
+  COUNT(*) AS customers_count
+FROM customers
+GROUP BY state, city
+ORDER BY customers_count DESC;
+
+-- Treemap: state -> city по суммарным событиям (из customer_events)
+SELECT
+  c.state,
+  c.city,
+  COUNT(e.event_id) AS events_count,
+  SUM(COALESCE(e.amount,0)) AS events_amount
+FROM customers c
+LEFT JOIN customer_events e ON e.customer_id = c.id
+GROUP BY c.state, c.city
+ORDER BY events_count DESC;
+
+--Word Cloud: частота городов (city как слова)
+SELECT city AS word, COUNT(*) AS weight
+FROM customers
+GROUP BY city
+ORDER BY weight DESC
+LIMIT 200;
+
+--Line chart (Data Engineering) — DB vs CSV
+SELECT date_trunc('day', event_time) AS day, COUNT(*) AS events_db
+FROM customer_events
+GROUP BY day
+ORDER BY day;
+
+SELECT date_trunc('day', event_time) AS day, COUNT(*) AS events_csv
+FROM customer_events_csv
+GROUP BY day
+ORDER BY day;
+
+--IF SEGMENT
+SELECT
+  segment,
+  state,
+  COUNT(*) AS cnt
+FROM customers
+GROUP BY segment, state
+ORDER BY cnt DESC;
+
