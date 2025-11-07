@@ -1,0 +1,37 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+      - superset_default   # Подключаем Prometheus к сети Superset
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+      - superset_default   # Подключаем Grafana к той же сети
+
+  custom_exporter:
+    build: .
+    container_name: custom_exporter
+    ports:
+      - "8000:8000"
+    networks:
+      - monitoring
+      - superset_default   # Экспортер должен видеть PostgreSQL из Superset
+    restart: always
+
+networks:
+  monitoring:
+  superset_default:
+    external: true   # Эта сеть уже существует
